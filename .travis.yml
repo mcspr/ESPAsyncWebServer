@@ -15,7 +15,6 @@ install:
     arduino-cli core install esp8266:esp8266
     arduino-cli lib install ArduinoJson@5.13.4
 
-    mkdir ~/Arduino/libraries
     pushd ~/Arduino/libraries
     ln -s $TRAVIS_BUILD_DIR espasyncwebserver
     git clone --depth=1 https://github.com/me-no-dev/espasynctcp
