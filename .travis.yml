@@ -2,13 +2,16 @@ language: bash
 os:
   - linux
 
-script:
+install:
+  - set -e
   - |
     curl -#OL https://github.com/arduino/arduino-cli/releases/download/0.3.5-alpha.preview/arduino-cli-0.3.5-alpha.preview-linux64.tar.bz2
     tar xf arduino-cli-0.3.5-alpha.preview-linux64.tar.bz2
     mv arduino-cli-0.3.5-alpha.preview-linux64 arduino-cli
     export PATH=$PATH:$TRAVIS_BUILD_DIR
+
   - |
+    arduino-cli core update-index
     arduino-cli core install esp8266:esp8266
     arduino-cli lib install ArduinoJson@5.13.4
 
@@ -17,6 +20,9 @@ script:
     ln -s $TRAVIS_BUILD_DIR espasyncwebserver
     git clone --depth=1 https://github.com/me-no-dev/espasynctcp
     popd
+  - set +e
+
+script:
   - |
     for sketch in $(find . -name '*.ino' -printf '%h\n') ; do
         arduino-cli compile --fqbn esp8266:esp8266:generic $sketch
